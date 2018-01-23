@@ -1,0 +1,34 @@
+
+===============================================================================
+OBSERVATION DATA STRUCT
+(sc2_env.py has the code)
+1) the order in the tuple is steptype, reward, discount factor (1.0 means reward backchannels fully, undiscounted),
+    and the observations
+
+===============================================================================
+READING THE SCREEN
+1) To get the readout of the screen as an array.
+        obs.observation["screen"][SC2_game_defs._PLAYER_RELATIVE]
+        the output is returned TOP-BOTTOM, LEFT-RIGHT
+===============================================================================
+IMPORTANT NUANCES OF GAME DESC
+
+_PLAYER_NEUTRAL = 3  # beacon/minerals
+
+===============================================================================
+ACTIONS
+
+0) there are some defines that are useful to use, and put in the file "sc2_game_Defs"
+
+(actions.py has the list)
+eg:
+    Function.ui_func(0, "no_op", no_op),
+    Function.ui_func(1, "move_camera", move_camera),
+    Function.ui_func(2, "select_point", select_point),
+    Function.ui_func(3, "select_rect", select_rect),
+
+2) Using actions
+    \\ if _MOVE_SCREEN in obs.observation["available_actions"]: \\
+
+
+===============================================================================

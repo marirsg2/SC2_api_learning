@@ -1,4 +1,4 @@
-
+#---start of python imports
 import sys
 import numpy as np
 import os
@@ -6,8 +6,9 @@ import dill
 import tempfile
 import tensorflow as tf
 import zipfile
+#---end of my python imports
 
-from pysc2.agents import random_agent
+from pysc2.agents import random_agent, base_agent
 from pysc2.env import sc2_env
 from pysc2.lib import actions as sc2_actions
 from pysc2.env import environment
@@ -17,6 +18,10 @@ from pysc2 import maps
 
 from absl import app
 from absl import flags
+#---end of sc2 imports
+#---start of my imports
+import SC2_game_defs
+#---end of my imports
 
 #----setup the flags for the simulation
 FLAGS = flags.FLAGS
@@ -48,7 +53,20 @@ flags.mark_flag_as_required("map")
 #---END flags defines for simulation
 FLAGS = flags.FLAGS
 #---end flag settings
-
+class New_ScriptedAgent_MoveToBeacon(base_agent.BaseAgent):
+  """An agent specifically for solving the MoveToBeacon map."""
+  def step(self, obs):
+    super(New_ScriptedAgent_MoveToBeacon, self).step(obs)
+    if SC2_game_defs._MOVE_SCREEN in obs.observation["available_actions"]:
+      player_relative = obs.observation["screen"][SC2_game_defs._PLAYER_RELATIVE]
+      neutral_y, neutral_x = (player_relative == SC2_game_defs._PLAYER_NEUTRAL).nonzero()
+      if not neutral_y.any():
+        return actions.FunctionCall(SC2_game_defs._NO_OP, [])
+      target = [int(neutral_x[0]), int(neutral_y[0])]
+      # target = [int(neutral_x.mean()), int(neutral_y.mean())]
+      return actions.FunctionCall(SC2_game_defs._MOVE_SCREEN, [SC2_game_defs._NOT_QUEUED, target])
+    else:
+      return actions.FunctionCall(SC2_game_defs._SELECT_ARMY, [SC2_game_defs._SELECT_ALL])
 
 def main_runner(unused_argv):
     with sc2_env.SC2Env(
@@ -57,7 +75,7 @@ def main_runner(unused_argv):
             visualize=True) as env:
 
         maps.get(FLAGS.map)  # Assert the map exists.
-        agent_000 = random_agent.RandomAgent()
+        agent_000 = New_ScriptedAgent_MoveToBeacon()
         action_spec = env.action_spec()
         observation_spec = env.observation_spec()
         agent_000.setup(observation_spec, action_spec)
@@ -65,9 +83,9 @@ def main_runner(unused_argv):
         try:
             obs = env.reset()
             #maybe have the first action to select all marines first
-            print(obs[0].observation["available_actions"])
             for step_idx in range(1000):
                 #could use packaged python agents
+                print(obs[0].observation["available_actions"])
                 rand_step = agent_000.step(obs[0])
                 obs = env.step([rand_step])
         except KeyboardInterrupt:

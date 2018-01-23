@@ -1,4 +1,19 @@
 
+
+GOAL: to use a basic RL agent to complete a minigame, and watch it get better from initial NN output actions
+to the end. MAYBE see examples to do so. Tensorflow or KERAS!
+    MY idea: state -> policy ->(output)goal-state. says "go to this state".
+            Then input both current and target state into a simple-dense NN to get the next action.
+            LATER PLANNING ASPECT:Maybe have a simulator that does next-n actions to check? this is the MODEL of the world ?
+--------------
+NOTE: there are TWO MARINES!! not SCVs. AND collecting mineral shards
 Next:
  1) analyze what data you get with every step. use the api document and cross reference.
  2) play with different actions, and NOT have a random script. See if you can control it the way you want.
+
+
+In actions.py
+you have an informative code with some lists for action types
+
+
+NEXT:  -----------  SEE THE ACTIONS IN THE LIST AND XLATE THEM
