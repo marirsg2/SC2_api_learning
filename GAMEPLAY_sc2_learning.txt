@@ -1,0 +1,4 @@
+
+Next:
+ 1) analyze what data you get with every step. use the api document and cross reference.
+ 2) play with different actions, and NOT have a random script. See if you can control it the way you want.
