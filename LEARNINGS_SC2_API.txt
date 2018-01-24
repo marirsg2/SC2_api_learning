@@ -1,9 +1,39 @@
 
 ===============================================================================
+MINIMAP:
+1)There is only ONE minimap !! all the info is from it. YES , there are DIMENSIONS in the order that it appears in
+in features.py, you can see the information extractable from either the "SCREEN" or "MINIMAP"
+3) The "colors" will give you the categorical values for each of the cases.
+
+===============================================================================
 OBSERVATION DATA STRUCT
 (sc2_env.py has the code)
-1) the order in the tuple is steptype, reward, discount factor (1.0 means reward backchannels fully, undiscounted),
+1) the info returned from env.step has info in the order of steptype, reward, discount factor (1.0 means reward backchannels fully, undiscounted),
     and the observations
+
+2) under the data struct returned from env.step(), the "observation" field is a dict with keys
+            "screen": (len(SCREEN_FEATURES),
+                   self._screen_size_px.y,
+                   self._screen_size_px.x),
+        "minimap": (len(MINIMAP_FEATURES),
+                    self._minimap_size_px.y,
+                    self._minimap_size_px.x),
+        "player": (11,),
+        "game_loop": (1,),
+        "score_cumulative": (13,),
+        "available_actions": (0,),
+        "single_select": (0, 7),  # Actually only (n, 7) for n in (0, 1)
+        "multi_select": (0, 7),
+        "cargo": (0, 7),
+        "cargo_slots_available": (1,),
+        "build_queue": (0, 7),
+        "control_groups": (10, 2),
+=====================================================
+
+DEFINING ACTIONS
+
+_ATTACK_SCREEN = actions.FUNCTIONS.Attack_screen.id
+_SELECT_ARMY = actions.FUNCTIONS.select_army.id
 
 ===============================================================================
 READING THE SCREEN
