@@ -1,5 +1,27 @@
 
 ===============================================================================
+PEOPLE
+
+Talk to the people on
+https://www.reddit.com/r/sc2ai/comments/6t4xo8/api_documentation_for_pysc2/
+
+
+===============================================================================
+SC2 API FROM BLIZZARD:
+https://github.com/deepmind/pysc2/blob/master/docs/environment.md
+https://github.com/Blizzard/s2client-api/tree/master/docs
+https://github.com/Blizzard/s2client-proto/blob/master/docs/protocol.md
+
+1)  The lower left of the map is (0, 0).
+
+===============================================================================
+ACTION DETAILS:
+
+https://github.com/Blizzard/s2client-proto/blob/master/docs/protocol.md
+
+May need to read the SC2 API from blizzard to know the details
+
+===============================================================================
 MINIMAP:
 1)There is only ONE minimap !! all the info is from it. YES , there are DIMENSIONS in the order that it appears in
 in features.py, you can see the information extractable from either the "SCREEN" or "MINIMAP"
@@ -10,6 +32,7 @@ OBSERVATION DATA STRUCT
 (sc2_env.py has the code)
 1) the info returned from env.step has info in the order of steptype, reward, discount factor (1.0 means reward backchannels fully, undiscounted),
     and the observations
+    Can be accessed by index or key words, ('step_type', 'reward', 'discount', 'observation')
 
 2) under the data struct returned from env.step(), the "observation" field is a dict with keys
             "screen": (len(SCREEN_FEATURES),

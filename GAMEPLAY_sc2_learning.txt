@@ -7,7 +7,22 @@ to the end. MAYBE see examples to do so. Tensorflow or KERAS!
             LATER PLANNING ASPECT:Maybe have a simulator that does next-n actions to check? this is the MODEL of the world ?
 --------------
 
+
+
+
+ENVIRONMENT.md has the interface for the commands
+        SEE THE DESCRIPTION BELOW
+too see the actions
+```shell
+$ python -m pysc2.bin.valid_actions
+```
+
+
 1) Try to control the marines separately, and do no-op while they are moving (can you get that information, YES target info)
+        @click screen command, to select the marine at a position.
+            a) Select IDLE army unit (simple enough for now)
+            b) move it.
+            c) Then try single select by position. (touch to select)
 2) Try to access the info from different screens, and if you can find the BUILDING TYPES.
 3) LAST, import your own map where the scv collects minerals from bottom left and deposits in the top right with a fenced enemy
     in the middle.

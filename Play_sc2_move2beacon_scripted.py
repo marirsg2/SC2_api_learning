@@ -64,7 +64,7 @@ class New_ScriptedAgent_MoveToBeacon(base_agent.BaseAgent):
         return actions.FunctionCall(SC2_game_defs._NO_OP, [])
       target = [int(neutral_x[0]), int(neutral_y[0])]
       # target = [int(neutral_x.mean()), int(neutral_y.mean())]
-      return actions.FunctionCall(SC2_game_defs._MOVE_SCREEN, [SC2_game_defs._NOT_QUEUED, target])
+      return actions.FunctionCall(SC2_game_defs._MOVE_SCREEN, [] )#[SC2_game_defs._NOT_QUEUED, target])
     else:
       return actions.FunctionCall(SC2_game_defs._SELECT_ARMY, [SC2_game_defs._SELECT_ALL])
 

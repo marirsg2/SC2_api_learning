@@ -1,0 +1,20 @@
+
+===============================================================++++++++
+
+
+void ActionImp::UnitCommand(const Unit* unit, AbilityID ability, const Unit* target, bool queued_command) {
+    if (!unit || !target) return;
+    UnitCommand(Units({ unit }), ability, target, queued_command);
+}
+
+===============================================================++++++++
+
+SC2_typeenums.h has all the ids
+
+
+===============================================================++++++++
+
+
+In sc2_clinet.cc:
+    bool ObservationImp::UpdateObservation()
+            has some information on how actions are processed

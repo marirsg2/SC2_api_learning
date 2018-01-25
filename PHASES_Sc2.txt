@@ -1,0 +1,6 @@
+
+
+
+NEXT: make a map of scv to minerals , and win if mineral score > X
+Could easily expand scenario such that SCV would have to explore after exploiting a find.
+
