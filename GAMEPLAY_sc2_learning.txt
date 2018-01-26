@@ -11,7 +11,8 @@ to the end. MAYBE see examples to do so. Tensorflow or KERAS!
 
 
 ENVIRONMENT.md has the interface for the commands
-        SEE THE DESCRIPTION BELOW
+        SEE THE DESCRIPTION BELOW the list of commands, very easy.
+        all the arguments are in LISTS.
 too see the actions
 ```shell
 $ python -m pysc2.bin.valid_actions

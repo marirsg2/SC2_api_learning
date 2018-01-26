@@ -57,6 +57,10 @@ class New_ScriptedAgent_MoveToBeacon(base_agent.BaseAgent):
   """An agent specifically for solving the MoveToBeacon map."""
   def step(self, obs):
     super(New_ScriptedAgent_MoveToBeacon, self).step(obs)
+    
+    if SC2_game_defs._SELECT_UNIT in obs.observation["available_actions"]:
+        return actions.FunctionCall(SC2_game_defs._SELECT_UNIT, [[0],[1]])#0 means select, second arg= 1 is the id
+
     if SC2_game_defs._MOVE_SCREEN in obs.observation["available_actions"]:
       player_relative = obs.observation["screen"][SC2_game_defs._PLAYER_RELATIVE]
       neutral_y, neutral_x = (player_relative == SC2_game_defs._PLAYER_NEUTRAL).nonzero()
@@ -64,7 +68,7 @@ class New_ScriptedAgent_MoveToBeacon(base_agent.BaseAgent):
         return actions.FunctionCall(SC2_game_defs._NO_OP, [])
       target = [int(neutral_x[0]), int(neutral_y[0])]
       # target = [int(neutral_x.mean()), int(neutral_y.mean())]
-      return actions.FunctionCall(SC2_game_defs._MOVE_SCREEN, [] )#[SC2_game_defs._NOT_QUEUED, target])
+      return actions.FunctionCall(SC2_game_defs._MOVE_SCREEN, [SC2_game_defs._NOT_QUEUED, target])
     else:
       return actions.FunctionCall(SC2_game_defs._SELECT_ARMY, [SC2_game_defs._SELECT_ALL])
 

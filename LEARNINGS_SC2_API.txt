@@ -1,4 +1,7 @@
 
+
+SEE THE GOOGLE DOC
+
 ===============================================================================
 PEOPLE
 
@@ -8,6 +11,9 @@ https://www.reddit.com/r/sc2ai/comments/6t4xo8/api_documentation_for_pysc2/
 
 ===============================================================================
 SC2 API FROM BLIZZARD:
+
+See the google doc.
+
 https://github.com/deepmind/pysc2/blob/master/docs/environment.md
 https://github.com/Blizzard/s2client-api/tree/master/docs
 https://github.com/Blizzard/s2client-proto/blob/master/docs/protocol.md

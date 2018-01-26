@@ -9,5 +9,6 @@ _NO_OP = actions.FUNCTIONS.no_op.id
 _MOVE_SCREEN = actions.FUNCTIONS.Move_screen.id
 _ATTACK_SCREEN = actions.FUNCTIONS.Attack_screen.id
 _SELECT_ARMY = actions.FUNCTIONS.select_army.id
+_SELECT_UNIT = actions.FUNCTIONS.select_unit.id
 _NOT_QUEUED = [0]
 _SELECT_ALL = [0]
