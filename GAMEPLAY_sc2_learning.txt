@@ -7,26 +7,18 @@ to the end. MAYBE see examples to do so. Tensorflow or KERAS!
             LATER PLANNING ASPECT:Maybe have a simulator that does next-n actions to check? this is the MODEL of the world ?
 --------------
 
+NEXT: See how the score changes with movement. Print it out or debug with a random agent that moves around.
 
 
+Currently, you're moving to the rock as the neutral, try moving to the resource field. What subtype is that ??
+Print the score.
+What is "score cumulative array" meaning [450   8   3  50 400   0   0   0   0   0   0   0   0]
+    Im guessing it is total, unit score, resource score etc. THIS could be information to shift attention.
 
-ENVIRONMENT.md has the interface for the commands
-        SEE THE DESCRIPTION BELOW the list of commands, very easy.
-        all the arguments are in LISTS.
-too see the actions
-```shell
-$ python -m pysc2.bin.valid_actions
-```
+Initially keep the marine in the center and fixed map, get the RL agent to learn something !!
 
-
-1) Try to control the marines separately, and do no-op while they are moving (can you get that information, YES target info)
-        @click screen command, to select the marine at a position.
-            a) Select IDLE army unit (simple enough for now)
-            b) move it.
-            c) Then try single select by position. (touch to select)
-2) Try to access the info from different screens, and if you can find the BUILDING TYPES.
-3) LAST, import your own map where the scv collects minerals from bottom left and deposits in the top right with a fenced enemy
-    in the middle.
+Add a win condition when resources collected is >500
+Add a time limit (google how), and win if resource > 500.
 
 
 In actions.py

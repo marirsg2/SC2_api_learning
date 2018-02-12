@@ -20,7 +20,7 @@ from absl import app
 from absl import flags
 #---end of sc2 imports
 #---start of my imports
-import SC2_game_defs
+import defs
 #---end of my imports
 
 #----setup the flags for the simulation
@@ -53,33 +53,36 @@ flags.mark_flag_as_required("map")
 #---END flags defines for simulation
 FLAGS = flags.FLAGS
 #---end flag settings
-class New_ScriptedAgent_MoveToBeacon(base_agent.BaseAgent):
+class New_ScriptedAgent_ResourceCollection(base_agent.BaseAgent):
   """An agent specifically for solving the MoveToBeacon map."""
   def step(self, obs):
-    super(New_ScriptedAgent_MoveToBeacon, self).step(obs)
-    
-    if SC2_game_defs._SELECT_UNIT in obs.observation["available_actions"]:
-        return actions.FunctionCall(SC2_game_defs._SELECT_UNIT, [[0],[1]])#0 means select, second arg= 1 is the id
+    super(New_ScriptedAgent_ResourceCollection, self).step(obs)
 
-    if SC2_game_defs._MOVE_SCREEN in obs.observation["available_actions"]:
-      player_relative = obs.observation["screen"][SC2_game_defs._PLAYER_RELATIVE]
-      neutral_y, neutral_x = (player_relative == SC2_game_defs._PLAYER_NEUTRAL).nonzero()
+    #for selecting a  VISIBLE UNIT
+    # if SC2_game_defs._SELECT_UNIT in obs.observation["available_actions"]:
+    #     return actions.FunctionCall(SC2_game_defs._SELECT_UNIT, [[0],[1]])#0 means select, second arg= 1 is the id
+
+    if defs._MOVE_SCREEN in obs.observation["available_actions"]:
+      player_relative = obs.observation["screen"][defs._PLAYER_RELATIVE]
+      neutral_y, neutral_x = (player_relative == defs._PLAYER_NEUTRAL).nonzero()
       if not neutral_y.any():
-        return actions.FunctionCall(SC2_game_defs._NO_OP, [])
+        return actions.FunctionCall(defs._NO_OP, [])
       target = [int(neutral_x[0]), int(neutral_y[0])]
       # target = [int(neutral_x.mean()), int(neutral_y.mean())]
-      return actions.FunctionCall(SC2_game_defs._MOVE_SCREEN, [SC2_game_defs._NOT_QUEUED, target])
+      return actions.FunctionCall(defs._MOVE_SCREEN, [defs._NOT_QUEUED, target])
     else:
-      return actions.FunctionCall(SC2_game_defs._SELECT_ARMY, [SC2_game_defs._SELECT_ALL])
-
+      return actions.FunctionCall(defs._SELECT_IDLE_WORKER, [defs._SELECT_IDLE_WORKER_SET])
+#======================================================================================
+#
+#======================================================================================
 def main_runner(unused_argv):
     with sc2_env.SC2Env(
-            map_name = "CollectMineralShards",
+            map_name = "ResourceCollection",
             step_mul=8,
             visualize=True) as env:
 
         maps.get(FLAGS.map)  # Assert the map exists.
-        agent_000 = New_ScriptedAgent_MoveToBeacon()
+        agent_000 = New_ScriptedAgent_ResourceCollection()
         action_spec = env.action_spec()
         observation_spec = env.observation_spec()
         agent_000.setup(observation_spec, action_spec)
@@ -89,14 +92,20 @@ def main_runner(unused_argv):
             #maybe have the first action to select all marines first
             for step_idx in range(1000):
                 #could use packaged python agents
-                print(obs[0].observation["available_actions"])
-                rand_step = agent_000.step(obs[0])
-                obs = env.step([rand_step])
+                #print(obs[0].observation["available_actions"])
+                print(obs[0].observation["score_cumulative"])
+                print(obs[0].reward)
+                print(obs[0].discount)
+
+                one_step = agent_000.step(obs[0])
+                obs = env.step([one_step])
         except KeyboardInterrupt:
             pass
         finally:
             print("simulation done")
 
 if __name__ == "__main__":
-    sys.argv = ["pysc2.bin.agent", "--map", "CollectMineralShards"]
+    sys.argv = ["pysc2.bin.agent", "--map", "ResourceCollection"]
     app.run(main_runner)
+
+

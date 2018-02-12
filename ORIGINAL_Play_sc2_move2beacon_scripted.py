@@ -20,7 +20,7 @@ from absl import app
 from absl import flags
 #---end of sc2 imports
 #---start of my imports
-import SC2_game_defs
+import defs
 #---end of my imports
 
 #----setup the flags for the simulation
@@ -57,16 +57,16 @@ class New_ScriptedAgent_MoveToBeacon(base_agent.BaseAgent):
   """An agent specifically for solving the MoveToBeacon map."""
   def step(self, obs):
     super(New_ScriptedAgent_MoveToBeacon, self).step(obs)
-    if SC2_game_defs._MOVE_SCREEN in obs.observation["available_actions"]:
-      player_relative = obs.observation["screen"][SC2_game_defs._PLAYER_RELATIVE]
-      neutral_y, neutral_x = (player_relative == SC2_game_defs._PLAYER_NEUTRAL).nonzero()
+    if defs._MOVE_SCREEN in obs.observation["available_actions"]:
+      player_relative = obs.observation["screen"][defs._PLAYER_RELATIVE]
+      neutral_y, neutral_x = (player_relative == defs._PLAYER_NEUTRAL).nonzero()
       if not neutral_y.any():
-        return actions.FunctionCall(SC2_game_defs._NO_OP, [])
+        return actions.FunctionCall(defs._NO_OP, [])
       target = [int(neutral_x[0]), int(neutral_y[0])]
       # target = [int(neutral_x.mean()), int(neutral_y.mean())]
-      return actions.FunctionCall(SC2_game_defs._MOVE_SCREEN, [SC2_game_defs._NOT_QUEUED, target])
+      return actions.FunctionCall(defs._MOVE_SCREEN, [defs._NOT_QUEUED, target])
     else:
-      return actions.FunctionCall(SC2_game_defs._SELECT_ARMY, [SC2_game_defs._SELECT_ALL])
+      return actions.FunctionCall(defs._SELECT_ARMY, [defs._SELECT_ALL])
 
 def main_runner(unused_argv):
     with sc2_env.SC2Env(
