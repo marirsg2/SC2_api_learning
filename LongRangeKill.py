@@ -1,12 +1,11 @@
 #---start of python imports
 import sys
+import time
+import random
+#---end of my python imports
 
-
-from pysc2.agents import random_agent, base_agent
+from pysc2.agents import base_agent
 from pysc2.env import sc2_env
-from pysc2.lib import actions as sc2_actions
-from pysc2.env import environment
-from pysc2.lib import features
 from pysc2.lib import actions
 from pysc2 import maps
 
@@ -17,7 +16,8 @@ from absl import flags
 import defs
 #---end of my imports
 
-#----setup the flags for the simulation
+
+#---END flags defines for simulation
 FLAGS = flags.FLAGS
 flags.DEFINE_bool("render", True, "Whether to render with pygame.")
 flags.DEFINE_integer("screen_resolution", 84,
@@ -47,28 +47,30 @@ flags.mark_flag_as_required("map")
 #---END flags defines for simulation
 FLAGS = flags.FLAGS
 #---end flag settings
-class New_ScriptedAgent_ResourceCollection(base_agent.BaseAgent):
+class New_ScriptedAgent_MoveToBeacon(base_agent.BaseAgent):
   """An agent specifically for solving the MoveToBeacon map."""
+  unit_selected =False
   def step(self, obs):
-    super(New_ScriptedAgent_ResourceCollection, self).step(obs)
+    super(New_ScriptedAgent_MoveToBeacon, self).step(obs)
+    if defs._ATTACK_SCREEN in obs.observation["available_actions"]:
 
-    #for selecting a  VISIBLE UNIT
-    # if SC2_game_defs._SELECT_UNIT in obs.observation["available_actions"]:
-    #     return actions.FunctionCall(SC2_game_defs._SELECT_UNIT, [[0],[1]])#0 means select, second arg= 1 is the id
-
-    if defs._MOVE_SCREEN in obs.observation["available_actions"]:
-      player_relative = obs.observation["screen"][defs._PLAYER_RELATIVE]
-      neutral_y, neutral_x = (player_relative == defs._PLAYER_NEUTRAL).nonzero()
-      if not neutral_y.any():
-        return actions.FunctionCall(defs._NO_OP, [])
-      target = [int(neutral_x[0]), int(neutral_y[0])]
+      # player_relative = obs.observation["screen"][defs._PLAYER_RELATIVE]
+      # neutral_y, neutral_x = (player_relative == defs._PLAYER_NEUTRAL).nonzero()
+      # if not neutral_y.any():
+      #   return actions.FunctionCall(defs._NO_OP, [])
+      target = [int(random.randrange(0,64)), int(random.randrange(0,64))]
       # target = [int(neutral_x.mean()), int(neutral_y.mean())]
-      return actions.FunctionCall(defs._MOVE_SCREEN, [defs._NOT_QUEUED, target])
+      return actions.FunctionCall(defs._ATTACK_SCREEN, [defs._NOT_QUEUED, target])
     else:
-      return actions.FunctionCall(defs._SELECT_IDLE_WORKER, [defs._SELECT_IDLE_WORKER_SET])
-#======================================================================================
-#
-#======================================================================================
+      return actions.FunctionCall(defs._SELECT_ARMY, [defs._SELECT_ALL])
+
+    if self.unit_selected == False:
+        self.unit_selected = True
+        return actions.FunctionCall(defs._SELECT_ARMY, [defs._SELECT_ALL])
+    else:
+        pass
+
+
 def main_runner(unused_argv):
     with sc2_env.SC2Env(
             map_name = "LongRangeKill",
@@ -76,7 +78,7 @@ def main_runner(unused_argv):
             visualize=True) as env:
 
         maps.get(FLAGS.map)  # Assert the map exists.
-        agent_000 = New_ScriptedAgent_ResourceCollection()
+        agent_000 = New_ScriptedAgent_MoveToBeacon()
         action_spec = env.action_spec()
         observation_spec = env.observation_spec()
         agent_000.setup(observation_spec, action_spec)
@@ -86,13 +88,12 @@ def main_runner(unused_argv):
             #maybe have the first action to select all marines first
             for step_idx in range(1000):
                 #could use packaged python agents
-                #print(obs[0].observation["available_actions"])
-                print(obs[0].observation["score_cumulative"])
-                print(obs[0].reward)
-                print(obs[0].discount)
+                print(obs[0].observation["available_actions"])
+                rand_step = agent_000.step(obs[0])
+                obs = env.step([rand_step])
 
-                one_step = agent_000.step(obs[0])
-                obs = env.step([one_step])
+                time.sleep(0.5)
+
         except KeyboardInterrupt:
             pass
         finally:
@@ -101,5 +102,3 @@ def main_runner(unused_argv):
 if __name__ == "__main__":
     sys.argv = ["pysc2.bin.agent", "--map", "LongRangeKill"]
     app.run(main_runner)
-
-

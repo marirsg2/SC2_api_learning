@@ -1,28 +1,37 @@
 
 
-GOAL: to use a basic RL agent to complete a minigame, and watch it get better from initial NN output actions
-to the end. MAYBE see examples to do so. Tensorflow or KERAS!
-    MY idea: state -> policy ->(output)goal-state. says "go to this state".
-            Then input both current and target state into a simple-dense NN to get the next action.
-            LATER PLANNING ASPECT:Maybe have a simulator that does next-n actions to check? this is the MODEL of the world ?
---------------
-
-NEXT: See how the score changes with movement. Print it out or debug with a random agent that moves around.
+Long Range Kill Map: Keep the timer as is. Good for determining if the agent will just explore the map, or try to kill quickly.
 
 
-Currently, you're moving to the rock as the neutral, try moving to the resource field. What subtype is that ??
-Print the score.
-What is "score cumulative array" meaning [450   8   3  50 400   0   0   0   0   0   0   0   0]
-    Im guessing it is total, unit score, resource score etc. THIS could be information to shift attention.
+0) Random move = random click
 
-Initially keep the marine in the center and fixed map, get the RL agent to learn something !!
+0.5) Could allow the attack option, and auto target in script only if the enemy is in sight.
+else return small negative reward. If enemy is there, return small positive reward. Hurting enemy is larger reward.
+MAYBE too much reward shaping.keep it simple, let exploration do the trick.
 
-Add a win condition when resources collected is >500
-Add a time limit (google how), and win if resource > 500.
+1) Find the health of the unit (enemy and self)
 
+ (player_relative = self, and at that position, query screen/unit_hit_points_ratio
+SCREEN_FEATURES = ScreenFeatures(
+    height_map=(256, FeatureType.SCALAR, colors.winter, False),
+    visibility_map=(4, FeatureType.CATEGORICAL,
+                    colors.VISIBILITY_PALETTE, False),
+    creep=(2, FeatureType.CATEGORICAL, colors.CREEP_PALETTE, False),
+    power=(2, FeatureType.CATEGORICAL, colors.POWER_PALETTE, False),
+    player_id=(17, FeatureType.CATEGORICAL,
+               colors.PLAYER_ABSOLUTE_PALETTE, False),
+    player_relative=(5, FeatureType.CATEGORICAL,
+                     colors.PLAYER_RELATIVE_PALETTE, False),
+    unit_type=(1850, FeatureType.CATEGORICAL, colors.unit_type, False),
+    selected=(2, FeatureType.CATEGORICAL, colors.SELECTED_PALETTE, False),
+    unit_hit_points=(1600, FeatureType.SCALAR, colors.hot, True),
+    unit_hit_points_ratio=(256, FeatureType.SCALAR, colors.hot, False),
+    unit_energy=(1000, FeatureType.SCALAR, colors.hot, True),
+    unit_energy_ratio=(256, FeatureType.SCALAR, colors.hot, False),
+    unit_shields=(1000, FeatureType.SCALAR, colors.hot, True),
+    unit_shields_ratio=(256, FeatureType.SCALAR, colors.hot, False),
+    unit_density=(16, FeatureType.SCALAR, colors.hot, True),
+    unit_density_aa=(256, FeatureType.SCALAR, colors.hot, False),
+    effects=(16, FeatureType.CATEGORICAL, colors.effects, False),
+)
 
-In actions.py
-you have an informative code with some lists for action types
-
-
-NEXT:  -----------  SEE THE ACTIONS IN THE LIST AND XLATE THEM
